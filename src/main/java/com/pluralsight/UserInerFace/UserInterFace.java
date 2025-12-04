@@ -8,10 +8,11 @@ import com.pluralsight.Models.LeaseContract;
 import com.pluralsight.Models.SalesContract;
 
 public class UserInterFace {
-/*
+    /*
 In short, each DAO instance is the “bridge” between your console UI and the database.
 Without them, your UI couldn’t read or write any data.
- */
+    */
+    
     // DAO for interacting with the vehicles table (view, search, delete)
     private final VehicleDao vehicleDao = new VehicleDao();
 

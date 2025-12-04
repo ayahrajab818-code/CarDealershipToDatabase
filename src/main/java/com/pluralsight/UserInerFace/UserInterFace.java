@@ -68,18 +68,18 @@ Without them, your UI couldn’t read or write any data.
     }
 
     private void buyVehicle() {
-        int vin = ConsoleHelper.promptForInt("Enter VIN to buy");
+        String vin = ConsoleHelper.promptForString("Enter VIN to buy");
         SalesContract sc = new SalesContract(vin, 100, 295);
         salesDao.addSale(sc);
-        vehicleDao.deleteVehicle(vin);
+        vehicleDao.deleteVehicle(Integer.parseInt(vin));
         System.out.println("Purchase complete!");
     }
 
     private void leaseVehicle() {
-        int vin = ConsoleHelper.promptForInt("Enter VIN to lease");
+        String vin = ConsoleHelper.promptForString("Enter VIN to lease");
         LeaseContract lc = new LeaseContract(vin, 5000, 300);
         leaseDao.addLease(lc);
-        vehicleDao.deleteVehicle(vin);
+        vehicleDao.deleteVehicle(Integer.parseInt(vin));
         System.out.println("Lease complete!");
     }
 
@@ -94,7 +94,7 @@ Without them, your UI couldn’t read or write any data.
     private void viewAllSales() {
         System.out.println("==== ALL SALES ====");
         salesDao.getAllSales().forEach(s ->
-                System.out.printf("Vehicle VIN: %d | Recording Fee: $%.2f | Processing Fee: $%.2f | Total: $%.2f%n",
+                System.out.printf("Vehicle VIN: %s | Recording Fee: $%.2f | Processing Fee: $%.2f | Total: $%.2f%n",
                         s.getVin(), s.getRecordingFee(), s.getProcessingFee(), s.getTotalPrice())
         );
     }
@@ -102,7 +102,7 @@ Without them, your UI couldn’t read or write any data.
     private void viewAllLeases() {
         System.out.println("==== ALL LEASES ====");
         leaseDao.getAllLeases().forEach(l ->
-                System.out.printf("Vehicle VIN: %d | Ending Value: $%.2f | Lease Fee: $%.2f%n",
+                System.out.printf("Vehicle VIN: %s | Ending Value: $%.2f | Lease Fee: $%.2f%n",
                         l.getVin(), l.getEndingValue(), l.getLeaseFee())
         );
     }

@@ -20,7 +20,7 @@ public class LeaseContractDao {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
 
-            ps.setInt(1, contract.getVin());
+            ps.setString(1, contract.getVin());
             ps.setDouble(2, contract.getEndingValue());
             ps.setDouble(3, contract.getLeaseFee());
             ps.executeUpdate();
@@ -37,7 +37,7 @@ public class LeaseContractDao {
 
             while (rs.next()) {
                 leases.add(new LeaseContract(
-                        rs.getInt("vin"),
+                        rs.getString("vin"),
                         rs.getDouble("down_payment"),
                         rs.getDouble("monthly_payment")
                 ));

@@ -2,19 +2,19 @@ package com.pluralsight.Models;
 
 public class SalesContract {
 
-    private int vin;
+    private String vin;
     private double recordingFee;
     private double processingFee;
 
 
-    public SalesContract(int vin, double recordingFee, double processingFee) {
+    public SalesContract(String vin, double recordingFee, double processingFee) {
         this.vin = vin;
         this.recordingFee = recordingFee;
         this.processingFee = processingFee;
     }
 
 
-    public int getVin() {
+    public String getVin() {
         return vin;
     }
 

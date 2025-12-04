@@ -19,7 +19,7 @@ public class SalesContractDao {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
 
-            ps.setInt(1, contract.getVin());
+            ps.setString(1, contract.getVin());
             ps.setDouble(2, contract.getTotalPrice());
             ps.setDouble(3, contract.getRecordingFee());
             ps.setDouble(4, contract.getProcessingFee());
@@ -37,7 +37,7 @@ public class SalesContractDao {
 
             while (rs.next()) {
                 sales.add(new SalesContract(
-                        rs.getInt("vin"),
+                        rs.getString("vin"),
                         rs.getDouble("recording_fee"),
                         rs.getDouble("processing_fee")
                 ));

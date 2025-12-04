@@ -6,6 +6,7 @@ import com.pluralsight.DataManger.SalesContractDao;
 import com.pluralsight.DataManger.VehicleDao;
 import com.pluralsight.Models.LeaseContract;
 import com.pluralsight.Models.SalesContract;
+import com.pluralsight.Models.Vehicle;
 
 public class UserInterFace {
     /*
@@ -34,6 +35,8 @@ Without them, your UI couldn’t read or write any data.
             System.out.println("2. Search by Make/Model");
             System.out.println("3. Buy Vehicle");
             System.out.println("4. Lease Vehicle");
+            System.out.println("5. View All Sales");
+            System.out.println("6. View All Leases");
             System.out.println("0. Exit");
 
             choice = ConsoleHelper.promptForInt("Choose an option");
@@ -43,21 +46,22 @@ Without them, your UI couldn’t read or write any data.
                 case 2 -> searchByMakeModel();
                 case 3 -> buyVehicle();
                 case 4 -> leaseVehicle();
+                case 5 -> viewAllSales();
+                case 6 -> viewAllLeases();
+
             }
 
         } while (choice != 0);
     }
 
     private void viewAll() {
-        vehicleDao.getAllVehicles().forEach(v ->
-                System.out.println(v.getVin() + " " + v.getMake() + " " + v.getModel())
-        );
+        vehicleDao.getAllVehicles().forEach(this::printVehicle);
     }
 
     private void searchByMakeModel() {
         String make = ConsoleHelper.promptForString("Enter make");
         String model = ConsoleHelper.promptForString("Enter model");
-
+        vehicleDao.getByMakeModel(make, model).forEach(this::printVehicle);
         vehicleDao.getByMakeModel(make, model).forEach(v ->
                 System.out.println(v.getVin() + " " + v.getMake() + " " + v.getModel())
         );
@@ -77,5 +81,29 @@ Without them, your UI couldn’t read or write any data.
         leaseDao.addLease(lc);
         vehicleDao.deleteVehicle(vin);
         System.out.println("Lease complete!");
+    }
+
+    // Helper method to print a vehicle in a readable format
+    private void printVehicle(Vehicle v) {
+        System.out.printf("VIN: %d | Make: %s | Model: %s | Year: %d | Price: $%.2f%n",
+                v.getVin(), v.getMake(), v.getModel(), v.getYear(), v.getPrice());
+    }
+
+    // ------------------- Admin Methods -------------------
+
+    private void viewAllSales() {
+        System.out.println("==== ALL SALES ====");
+        salesDao.getAllSales().forEach(s ->
+                System.out.printf("Vehicle VIN: %d | Recording Fee: $%.2f | Processing Fee: $%.2f | Total: $%.2f%n",
+                        s.getVin(), s.getRecordingFee(), s.getProcessingFee(), s.getTotalPrice())
+        );
+    }
+
+    private void viewAllLeases() {
+        System.out.println("==== ALL LEASES ====");
+        leaseDao.getAllLeases().forEach(l ->
+                System.out.printf("Vehicle VIN: %d | Ending Value: $%.2f | Lease Fee: $%.2f%n",
+                        l.getVin(), l.getEndingValue(), l.getLeaseFee())
+        );
     }
 }

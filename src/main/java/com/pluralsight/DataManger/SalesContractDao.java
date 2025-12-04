@@ -5,6 +5,10 @@ import com.pluralsight.Models.SalesContract;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SalesContractDao {
     public void addSale(SalesContract contract) {
@@ -21,5 +25,28 @@ public class SalesContractDao {
             ps.setDouble(4, contract.getProcessingFee());
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
+    }
+    // Add this method to fetch all sales
+    public List<SalesContract> getAllSales() {
+        List<SalesContract> sales = new ArrayList<>();
+        String sql = "SELECT * FROM sales_contracts"; // adjust table name if different
+
+        try (Connection conn = MyDataSource.getDataSource().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                sales.add(new SalesContract(
+                        rs.getInt("vin"),
+                        rs.getDouble("recording_fee"),
+                        rs.getDouble("processing_fee")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return sales;
     }
 }
